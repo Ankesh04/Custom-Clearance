@@ -1,36 +1,38 @@
-import React, { useState } from 'react';
-import LandingPage from './pages/LandingPage/LandingPage.jsx';
-import LoginSignupPage from './pages/LoginSignupPage/LoginSignupPage.jsx';
-import './index.css';
+// App.jsx – Fixed import path + routes
 
-/**
- * The main App component.
- * This component acts as the root of the application and handles routing.
- * It uses state to determine which page (Landing or Login/Signup) to display.
- */
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import PageLayout from "./components/layout/PageLayout";
+import LoginSignupPage from "./pages/LoginSignupPage/LoginSignupPage.jsx";
+import DashboardPage from "./pages/Dashboard/DashboardPage.jsx";
+import DocumentUploadPage from "./pages/Dashboard/DocumentUploadPage/DocumentUploadPage.jsx"; // Correct path
+import "./index.css";
+
 function App() {
-  
-  const [currentPage, setCurrentPage] = useState('landing');
-
-  
-  const navigateToLogin = () => {
-    setCurrentPage('login');
-  };
-  
-  
-  const navigateToLanding = () => {
-      setCurrentPage('landing');
-  };
-
   return (
-    <div>
-      
-      {currentPage === 'landing' && <LandingPage onNavigateToLogin={navigateToLogin} />}
+    <Routes>
+      {/* Home */}
+      <Route
+        path="/"
+        element={
+          <PageLayout>
+            <div>Home Page Content</div>
+          </PageLayout>
+        }
+      />
 
-      {currentPage === 'login' && <LoginSignupPage onNavigateToLanding={navigateToLanding} />}
-    </div>
+      {/* Login */}
+      <Route path="/login" element={<LoginSignupPage />} />
+
+      {/* Dashboard */}
+      <Route path="/dashboard" element={<DashboardPage />} />
+
+      {/* Documents Section */}
+    // App.jsx – Update route
+<Route path="/documents" element={<DocumentsPage />} />
+     <Route path="/documents/upload" element={<DocumentUploadPage />} />
+    </Routes>
   );
 }
 
 export default App;
-
