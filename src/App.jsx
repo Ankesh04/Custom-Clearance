@@ -6,6 +6,7 @@ import PageLayout from "./components/layout/PageLayout";
 import LoginSignupPage from "./pages/LoginSignupPage/LoginSignupPage.jsx";
 import DashboardPage from "./pages/Dashboard/DashboardPage.jsx";
 import DocumentUploadPage from "./pages/Dashboard/DocumentUploadPage/DocumentUploadPage.jsx"; // Correct path
+import AiAssistantPage from "./pages/Dashboard/AiAssistantPage/AiAssistantPage.jsx";
 import "./index.css";
 
 function App() {
@@ -20,17 +21,14 @@ function App() {
           </PageLayout>
         }
       />
-
       {/* Login */}
       <Route path="/login" element={<LoginSignupPage />} />
-
       {/* Dashboard */}
       <Route path="/dashboard" element={<DashboardPage />} />
-
-      {/* Documents Section */}
-    // App.jsx – Update route
-<Route path="/documents" element={<DocumentsPage />} />
-     <Route path="/documents/upload" element={<DocumentUploadPage />} />
+      <Route path="/ai-assistant" element={<AiAssistantPage />} />
+      
+    {/* Document Upload inside Dashboard */}
+      <Route path="/dashboard/documents" element={<DocumentUploadPage />} />
     </Routes>
   );
 }
