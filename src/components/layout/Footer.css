@@ -105,10 +105,48 @@
 @media (max-width: 768px) {
   .footer-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
     text-align: center;
-    gap: 1.25rem;
   }
+
+  /* Brand (first column) – centered */
+  .footer-column:first-child {
+    order: -1;
+  }
+
   .logo {
     justify-content: center;
+    font-size: 1.1rem;
+  }
+
+  .logo-text {
+    font-weight: 600;
+  }
+
+  /* Headings – bold only */
+  .footer-column h4 {
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  /* Links – normal */
+  .footer-links a {
+    font-size: 0.95rem;
+    font-weight: normal;
+  }
+
+  /* Rest of columns – side by side below brand */
+  .footer-column:nth-child(2),
+  .footer-column:nth-child(3),
+  .footer-column:nth-child(4) {
+    display: inline-block;
+    width: 45%;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .footer-column:nth-child(2),
+  .footer-column:nth-child(3) {
+    margin-bottom: 1rem;
   }
 }

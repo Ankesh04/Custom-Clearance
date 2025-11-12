@@ -262,7 +262,7 @@
 
 .hero-section {
   min-height: calc(100vh - 70px);
-  /* padding-top: 90px; */
+  padding-top: 90px;
 }
    .section {
   padding: 3rem 1.5rem;
@@ -384,6 +384,27 @@
   font-size: 0.95rem;
   line-height: 1.5;
   margin: 0;
+}
+@media (max-width: 768px) {
+  .section.section-white.glow-accent .features-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0 1rem;
+    overflow-x: hidden;
+  }
+
+  .section.section-white.glow-accent .card-feature {
+    min-width: 100%;
+    max-width: 320px;
+    padding: 1.3rem;
+    margin: 0;
+  }
+
+  .video-container {
+    max-width: 100%;
+    margin: 1.5rem auto;
+  }
 }
 /* ==========================================================================
    TESTIMONIALS – BACKGROUND IMAGE + OVERLAY + ONE-LINE CARDS
@@ -519,6 +540,34 @@
   }
 }
 
+@media (max-width: 768px) {
+  .section-testimonials {
+    padding: 3rem 1rem;
+    min-height: auto;
+    background-size: cover;
+    background-position: center 30%; /* Show top part of image */
+  }
+
+  .section-testimonials .testimonials-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    overflow-x: hidden;
+    scroll-snap-type: none;
+  }
+
+  .section-testimonials .card-testimonial {
+    min-width: 80%;
+    max-width: 200px;
+    padding: 1.5rem;
+    margin: 0;
+  }
+
+  .section-testimonials .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+}
 /* ==========================================================================
    COUNTRIES SECTION – INDIA & NEPAL ONLY (Clean, Full-Screen)
    ========================================================================== */
@@ -696,6 +745,9 @@
   .hero-grid {
     grid-template-columns: 1fr 1fr;
     text-align: left;
+  }
+  .hero-sections{
+    margin-top:10px;
   }
   .hero-content {
     text-align: left;
