@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   updateProfile,
+  GoogleAuthProvider,
 } from "firebase/auth";
 import { auth, googleProvider } from "../../firebaseConfig";
 import { useAuth } from "../../context/AuthContext";
@@ -82,52 +83,70 @@ const LoginSignupPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  // ✅ Detect mode from URL
+  // Detect mode from URL
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const mode = params.get("mode");
     if (mode === "signup") setIsLoginView(false);
   }, []);
 
-  // ✅ Redirect logged-in users automatically
+  // Redirect logged-in users
   useEffect(() => {
     if (user) {
-      navigate("/dashboard"); // redirect to dashboardpage
+      navigate("/dashboard");
     }
   }, [user, navigate]);
 
   const toggleView = () => setIsLoginView(!isLoginView);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
+  // CRITICAL: Force Google to always ask for account + fetch fresh photo
+  useEffect(() => {
+    googleProvider.setCustomParameters({
+      prompt: "select_account",
+    });
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
     try {
       if (isLoginView) {
         await signInWithEmailAndPassword(auth, email, password);
-        setMessage("✅ Login successful!");
-        navigate("/dashboard");
+        setMessage("Login successful!");
       } else {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const newUser = userCredential.user;
+
+        // Update profile with displayName
         if (fullname.trim()) {
-          await updateProfile(userCredential.user, { displayName: fullname });
+          await updateProfile(newUser, {
+            displayName: fullname,
+          });
         }
-        setMessage("🎉 Account created successfully!");
+
+        setMessage("Account created successfully!");
         navigate("/login");
-        
       }
     } catch (error) {
-      setMessage(`❌ ${error.message}`);
+      setMessage(`Error: ${error.message}`);
     }
   };
 
   const handleGoogleLogin = async () => {
+    setMessage("");
     try {
-      await signInWithPopup(auth, googleProvider);
-      setMessage("✅ Logged in with Google!");
+      const result = await signInWithPopup(auth, googleProvider);
+      await result.user.getIdToken(true);
+      const user = result.user;
+
+      // Force refresh token to ensure photoURL is latest
+      await user.getIdToken(true);
+
+      setMessage("Logged in with Google!");
       navigate("/dashboard");
     } catch (error) {
-      setMessage(`❌ ${error.message}`);
-      
+      setMessage(`Google Login Failed: ${error.message}`);
     }
   };
 
@@ -252,5 +271,6 @@ const LoginSignupPage = () => {
     </div>
   );
 };
+
 
 export default LoginSignupPage;

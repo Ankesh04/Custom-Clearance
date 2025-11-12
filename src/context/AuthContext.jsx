@@ -1,12 +1,12 @@
 // src/context/AuthContext.jsx
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "../firebaseConfig"; // Updated path to match your firebase.js
+import { onAuthStateChanged, signOut, GoogleAuthProvider } from "firebase/auth";
+import { auth } from "../firebaseConfig";
 
 // Create the context
 const AuthContext = createContext();
 
-// Custom hook to use the context
+// Custom hook
 export const useAuth = () => useContext(AuthContext);
 
 // Provider component
@@ -15,12 +15,33 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        // Force refresh token to get latest photoURL (especially for Google)
+        firebaseUser.getIdToken(true).then(() => {
+          // Re-read user after token refresh
+          const fresh = auth.currentUser;
+          setUser({
+            uid: fresh.uid,
+            email: fresh.email,
+            displayName: fresh.displayName,
+            photoURL: fresh.photoURL, // Guaranteed fresh
+          });
+        }).catch(() => {
+          // Fallback if token refresh fails
+          setUser({
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            displayName: firebaseUser.displayName,
+            photoURL: firebaseUser.photoURL,
+          });
+        });
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 

@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+// src/components/layout/PageLayout.jsx
+import { useAuth } from "../../context/AuthContext";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import "./PageLayout.css";
+
 
 const StarIcon = () => (
   <svg
@@ -17,17 +20,44 @@ const StarIcon = () => (
 
 export default function PageLayout() {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const handleNavigate = (path) => {
     navigate(path);
   };
+  // SCROLL ANIMATION OBSERVER
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            // Optional: Stop observing after animation
+            // observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.15, // Trigger when 15% of element is visible
+        rootMargin: "0px 0px -50px 0px", // Trigger a bit early
+      }
+    );
+
+    // Observe all elements with animate-on-scroll
+    document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+      observer.observe(el);
+    });
+
+    // Cleanup
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div className="page-wrapper">
+    <div  className="page-wrapper">
       <Navbar />
       <main>
         {/* --- Hero Section --- */}
-        <section className="hero-section">
+        <section id="heros" className="hero-section">
           <div className="glow glow-accent"></div>
           <div className="glow glow-primary"></div>
 
@@ -37,16 +67,25 @@ export default function PageLayout() {
                 Trusted by shippers worldwide
               </span>
 
-              <h1 className="hero-title fade-in-up" style={{ animationDelay: "0.2s" }}>
+              <h1
+                className="hero-title fade-in-up"
+                style={{ animationDelay: "0.2s" }}
+              >
                 The Smartest Way to Clear Customs
               </h1>
 
-              <p className="hero-subtitle fade-in-up" style={{ animationDelay: "0.4s" }}>
+              <p
+                className="hero-subtitle fade-in-up"
+                style={{ animationDelay: "0.4s" }}
+              >
                 Verify documents, book appointments, and track your goods with
                 our intelligent AI Assistant.
               </p>
 
-              <div className="hero-actions fade-in-up" style={{ animationDelay: "0.6s" }}>
+              <div
+                className="hero-actions fade-in-up"
+                style={{ animationDelay: "0.6s" }}
+              >
                 <button
                   className="btn-accent-gradient"
                   onClick={() => handleNavigate("/login?mode=signup")}
@@ -61,10 +100,10 @@ export default function PageLayout() {
                 </button>
               </div>
 
-              <div className="hero-stats fade-in-up" style={{ animationDelay: "0.8s" }}>
-                <div className="pill-stat">
-                  <strong>2k+</strong> Documents/day
-                </div>
+              <div
+                className="hero-stats fade-in-up"
+                style={{ animationDelay: "0.8s" }}
+              >
                 <div className="pill-stat">
                   <strong>99.9%</strong> Verification accuracy
                 </div>
@@ -74,7 +113,10 @@ export default function PageLayout() {
               </div>
             </div>
 
-            <div className="hero-image-container fade-in-up" style={{ animationDelay: "0.5s" }}>
+            <div
+              className="hero-image-container fade-in-up"
+              style={{ animationDelay: "0.5s" }}
+            >
               <img
                 src="/src/assets/images/login-background.png"
                 alt="Trucks at a shipping port"
@@ -85,18 +127,53 @@ export default function PageLayout() {
         </section>
 
         {/* --- How It Works Section --- */}
-        <section id="how-it-works" className="section section-white">
+        <section
+          id="how-it-works"
+          className="section section-white glow-accent"
+        >
           <div className="section-container text-center">
-            <h2 className="section-title fade-in-up">How it Works</h2>
-            <div className="video-container">
+            <h2 className="section-title animate-on-scroll">How it Works</h2>
+
+            <div className="video-container animate-on-scroll">
               <video autoPlay muted loop playsInline>
                 <source src="/hiw_video.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
 
-            <div className="features-grid fade-in-up" style={{ animationDelay: "0.2s" }}>
-              <div className="card-feature">
+            <div className="features-grid">
+              {/* Card 1 */}
+              <div
+                className="card-feature animate-on-scroll"
+                style={{ animationDelay: "0.1s" }}
+              >
+                <div className="icon-chip">
+                  <svg
+                    className="icon"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7z M12 12a2 2 0 100-4 2 2 0 000 4z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="card-title">Trade Lane</h3>
+                <p>
+                  Define From → To → Product → Get docs, HS codes & duties
+                  instantly.
+                </p>
+              </div>
+
+              {/* Card 2 */}
+              <div
+                className="card-feature animate-on-scroll"
+                style={{ animationDelay: "0.2s" }}
+              >
                 <div className="icon-chip">
                   <svg
                     className="icon"
@@ -113,10 +190,16 @@ export default function PageLayout() {
                   </svg>
                 </div>
                 <h3 className="card-title">Upload & Verify</h3>
-                <p>Upload documents and let our system validate them instantly.</p>
+                <p>
+                  Upload documents and let our system validate them instantly.
+                </p>
               </div>
 
-              <div className="card-feature">
+              {/* Card 3 */}
+              <div
+                className="card-feature animate-on-scroll"
+                style={{ animationDelay: "0.3s" }}
+              >
                 <div className="icon-chip">
                   <svg
                     className="icon"
@@ -133,43 +216,47 @@ export default function PageLayout() {
                   </svg>
                 </div>
                 <h3 className="card-title">Get AI Guidance</h3>
-                <p>Receive AI-backed guidance on regulations and requirements.</p>
-              </div>
-
-              <div className="card-feature">
-                <div className="icon-chip">
-                  <svg
-                    className="icon"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-                    />
-                  </svg>
-                </div>
-                <h3 className="card-title">Export with Confidence</h3>
-                <p>Book appointments and export with everything verified.</p>
+                <p>
+                  Receive AI-backed guidance on regulations and requirements.
+                </p>
               </div>
             </div>
           </div>
         </section>
 
         {/* --- Testimonials Section --- */}
-        <section id="reviews" className="section">
-          <div className="section-container text-center">
-            <h2 className="section-title fade-in-up">What Our Customers Say</h2>
-            <div className="testimonials-grid fade-in-up" style={{ animationDelay: "0.2s" }}>
+        <section id="reviews" className="section section-testimonials">
+          <div className="section-container">
+            <h2 className="section-title animate-on-scroll">
+              What Our Customers Say
+            </h2>
+
+            <div className="testimonials-grid">
               {[
-                { name: "Amara S.", title: "Logistics Manager", text: "Cut our clearance time by 50%. A game changer for our logistics.", avatar: "A" },
-                { name: "John M.", title: "Import/Export Specialist", text: "The AI document verification is instant and reliable. Highly recommended!", avatar: "J" },
-                { name: "Sophia L.", title: "Supply Chain Director", text: "The AI assistant is a game changer. We love it.", avatar: "S" },
+                {
+                  name: "Amara S.",
+                  title: "Logistics Manager",
+                  text: "Cut our clearance time by 50%. A game changer for our logistics.",
+                  avatar: "A",
+                },
+                {
+                  name: "John M.",
+                  title: "Import/Export Specialist",
+                  text: "The AI document verification is instant and reliable. Highly recommended!",
+                  avatar: "J",
+                },
+                {
+                  name: "Sophia L.",
+                  title: "Supply Chain Director",
+                  text: "The AI assistant is a game changer. We love it.",
+                  avatar: "S",
+                },
               ].map((t, i) => (
-                <div className="card-testimonial" key={i}>
+                <div
+                  className="card-testimonial animate-on-scroll"
+                  key={i}
+                  style={{ animationDelay: `${i * 0.15}s` }}
+                >
                   <img
                     src={`https://placehold.co/64x64/EBF1F6/2D3A5D?text=${t.avatar}`}
                     alt={t.name}
@@ -189,66 +276,100 @@ export default function PageLayout() {
           </div>
         </section>
 
-        {/* --- Countries Section --- */}
-        <section id="countries" className="section section-white">
-          <div className="section-container text-center">
-            <h2 className="section-title fade-in-up">Supporting Your Global Trade</h2>
-            <div className="countries-grid fade-in-up" style={{ animationDelay: "0.2s" }}>
-              {["US", "EU", "CN", "GB", "JP", "IN"].map((country) => (
-                <div key={country} className="card-country">
-                  {country}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* --- Features Section --- */}
-        <section id="features" className="section">
-          <div className="section-container">
-            <h2 className="section-title text-center fade-in-up">
-              Everything you need to clear customs
+        {/* --- Countries Section (India & Nepal) --- */}
+        <section id="countries" className="section section-countries">
+          <div className="countries-content">
+            <h2 id="country1" className="section-title animate-on-scroll">
+              Your Trade Partner
             </h2>
-            <div className="features-grid fade-in-up" style={{ animationDelay: "0.2s" }}>
-              <div className="card-feature-alt">
-                <h3 className="card-title">AI-Powered Document Verification</h3>
-                <p>Our system cross-references your documents with country-specific rules.</p>
+
+            <div className="country-pair">
+              <div className="country-card animate-on-scroll">
+                <div className="flag">India</div>
+                <h3>India</h3>
+                <p>500+ Monthly Shipments</p>
               </div>
-              <div className="card-feature-alt">
-                <h3 className="card-title">Appointment Booking</h3>
-                <p>Schedule export appointments directly from the platform.</p>
+
+              <div className="trade-arrow animate-on-scroll">→</div>
+
+              <div className="country-card animate-on-scroll">
+                <div className="flag">Nepal</div>
+                <h3>Nepal</h3>
+                <p>24-Hour Clearance</p>
               </div>
-              <div className="card-feature-alt">
-                <h3 className="card-title">Real-Time Tracking</h3>
-                <p>Track goods from booking to delivery with live updates.</p>
+
+              <div className="trade-arrow animate-on-scroll">→</div>
+
+              <div className="country-card animate-on-scroll">
+                <div className="flag">China</div>
+                <h3>China</h3>
+                <p>Coming Soon</p>
+              </div>
+
+              <div className="trade-arrow animate-on-scroll">→</div>
+
+              <div className="country-card animate-on-scroll">
+                <div className="flag">Sri Lanka</div>
+                <h3>Sri Lanka</h3>
+                <p>Coming Soon</p>
               </div>
             </div>
+
+            <button
+              className="btn-start animate-on-scroll"
+              onClick={() => handleNavigate("/login?mode=signup")}
+            >
+              Start Your Shipment
+            </button>
           </div>
         </section>
 
         {/* --- CTA Section --- */}
         <section className="cta-section">
           <div className="cta-bg-overlay"></div>
-          <div className="glow glow-accent"></div>
-          <div className="glow glow-primary"></div>
+
           <div className="section-container text-center">
-            <h2 className="section-title fade-in-up">Ready to clear customs faster?</h2>
-            <p className="cta-subtitle fade-in-up" style={{ animationDelay: "0.2s" }}>
-              Manage documents, appointments, and tracking, all in one place.
+            <h2 className="section-title animate-on-scroll">
+              Ready to clear customs faster?
+            </h2>
+
+            <p
+              className="cta-subtitle animate-on-scroll"
+              style={{ animationDelay: "0.2s" }}
+            >
+              Manage documents, AI Suggestions, and Know Terms & Conditions, all
+              in one place.
             </p>
-            <div className="cta-actions fade-in-up" style={{ animationDelay: "0.4s" }}>
-              <button
-                className="btn-accent-gradient"
-                onClick={() => handleNavigate("/login?mode=signup")}
-              >
-                Create Account
-              </button>
-              <button
-                className="btn-ghost"
-                onClick={() => handleNavigate("/login")}
-              >
-                Login
-              </button>
+
+            <div
+              className="cta-actions animate-on-scroll"
+              style={{ animationDelay: "0.4s" }}
+            >
+              {/* Show only if NOT logged in */}
+              {!user ? (
+                <>
+                  <button
+                    className="btn-accent-gradient"
+                    onClick={() => handleNavigate("/login?mode=signup")}
+                  >
+                    Create Account
+                  </button>
+                  <button
+                    className="btn-ghost"
+                    onClick={() => handleNavigate("/login")}
+                  >
+                    Login
+                  </button>
+                </>
+              ) : (
+                // Show only if logged in
+                <button
+                  className="btn-accent-gradient"
+                  onClick={() => handleNavigate("/dashboard")}
+                >
+                  Get Started
+                </button>
+              )}
             </div>
           </div>
         </section>

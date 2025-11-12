@@ -13,7 +13,7 @@ const Icon = ({ path }) => (
 );
 
 // ── Country / Category Dropdowns ─────────────
-const countries = ["India","Nepal","United States","China","Germany","Japan","United Kingdom","France","Brazil","Canada"];
+const countries = ["India","Nepal","United States","China"];
 const categories = ["Electronics","Food","Textiles","Machinery","Pharmaceuticals"];
 
 const CountrySelect = ({ label, value, onChange }) => {

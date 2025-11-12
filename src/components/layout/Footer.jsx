@@ -7,7 +7,7 @@ const Logo = () => (
     <div className="logo-icon-wrapper">
       <span className="logo-icon-text">C</span>
     </div>
-    <span className="logo-text">Custom Clearance</span>
+    <a className="logo-text" href="#heros">Custom Clearance</a>
   </div>
 );
 
@@ -40,8 +40,8 @@ export default function Footer() {
           <div className="footer-column">
             <h4 className="footer-heading">Contact</h4>
             <ul className="footer-links">
-              <li><a href="mailto:support@cc.io">support@cc.io</a></li>
-              <li><a href="#">Twitter</a></li>
+              <li><a href="https://github.com/Ankesh04">GitHub</a></li>
+              <li><a href="#">Email</a></li>
               <li><a href="#">LinkedIn</a></li>
             </ul>
           </div>

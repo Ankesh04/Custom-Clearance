@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import "./Navbar.css";
@@ -17,12 +17,30 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const handleNavigate = (path) => navigate(path);
+  const handleNavigate = (path) => {
+    setMenuOpen(false);
+    navigate(path);
+  };
+
   const handleLogout = async () => {
     await logout();
     setDropdownOpen(false);
+    setMenuOpen(false);
+    navigate("/login");
   };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <header className="site-header">
@@ -41,20 +59,19 @@ export default function Navbar() {
           ☰
         </button>
 
-        {/* Navigation */}
-        <nav className={`header-nav ${menuOpen ? "active" : ""}`}>
-          <a href="#how-it-works" onClick={() => setMenuOpen(false)}>How it Works</a>
-          <a href="#reviews" onClick={() => setMenuOpen(false)}>Reviews</a>
-          <a href="#countries" onClick={() => setMenuOpen(false)}>Countries</a>
-          <a href="#features" onClick={() => setMenuOpen(false)}>Features</a>
-        </nav>
+        {/* Desktop Nav & Actions */}
+        <div className="desktop-nav">
+          <nav className="header-nav">
+            <a href="#how-it-works">How it Works</a>
+            <a href="#reviews">Reviews</a>
+            <a href="#countries">Countries</a>
+            <a href="dashboard">Dashboard</a>
+          </nav>
 
-        {/* Auth Buttons / User Menu */}
-        <div className="header-actions">
           {!user ? (
-            <>
+            <div className="header-actions">
               <button
-                className="btn-ghost desktop-only"
+                className="btn-ghost"
                 onClick={() => handleNavigate("/login")}
               >
                 Login
@@ -65,32 +82,109 @@ export default function Navbar() {
               >
                 Get Started
               </button>
-            </>
+            </div>
           ) : (
-            <div className="user-menu-wrapper">
+            <div className="user-menu">
               <button
-                className="user-avatar-btn"
+                className="avatar-btn"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
+                aria-label="User menu"
               >
-                <img
-                  src={user.photoURL || "https://placehold.co/40x40?text=U"}
-                  alt="User avatar"
-                  className="user-avatar"
-                />
-              </button>
-
-              {dropdownOpen && (
-                <div className="user-dropdown">
-                  <p className="user-name">{user.displayName || "User"}</p>
-                  <p className="user-email">{user.email}</p>
-                  <button className="logout-btn" onClick={handleLogout}>
-                    Logout
-                  </button>
+                {user.photoURL ? (
+                  <img
+                    src={user.photoURL}
+                    alt="User"
+                    className="avatar-img"
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                      e.target.nextElementSibling.style.display = "flex";
+                    }}
+                  />
+                ) : null}
+                <div
+                  className="avatar-text"
+                  style={{ display: user.photoURL ? "none" : "flex" }}
+                >
+                  {(user.displayName || user.email || "U")
+                    .charAt(0)
+                    .toUpperCase()}
                 </div>
-              )}
+              </button>
             </div>
           )}
         </div>
+
+        {/* Mobile Menu (Hamburger) */}
+        <div className={`mobile-menu ${menuOpen ? "active" : ""}`}>
+          {/* Nav Links */}
+          <a href="#how-it-works" onClick={() => setMenuOpen(false)}>
+            How it Works
+          </a>
+          <a href="#reviews" onClick={() => setMenuOpen(false)}>
+            Reviews
+          </a>
+          <a href="#countries" onClick={() => setMenuOpen(false)}>
+            Countries
+          </a>
+          <a href="dashboard" onClick={() => setMenuOpen(false)}>
+            Dashboard
+          </a>
+
+          {/* Auth Buttons or User Menu */}
+          {!user ? (
+            <>
+              <button
+                className="btn-ghost mobile-btn"
+                onClick={() => handleNavigate("/login")}
+              >
+                Login
+              </button>
+              <button
+                className="btn-accent mobile-btn"
+                onClick={() => handleNavigate("/login?mode=signup")}
+              >
+                Get Started
+              </button>
+            </>
+          ) : (
+            <div className="mobile-user-section">
+              {/* Avatar */}
+              <div className="mobile-avatar">
+                {user.photoURL ? (
+                  <img src={user.photoURL} alt="User" className="avatar-img" />
+                ) : (
+                  <div className="avatar-text">
+                    {(user.displayName || user.email || "U")
+                      .charAt(0)
+                      .toUpperCase()}
+                  </div>
+                )}
+              </div>
+
+              {/* User Info */}
+              <p className="mobile-user-name">{user.displayName || "User"}</p>
+              <p className="mobile-user-email">{user.email}</p>
+
+              {/* Logout */}
+              <button
+                className="logout-btn mobile-logout"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
+        {/* Dropdown (Desktop Only) */}
+        {dropdownOpen && user && (
+          <div className="user-dropdown" ref={dropdownRef}>
+            <p className="user-name">{user.displayName || "User"}</p>
+            <p className="user-email">{user.email}</p>
+            <button className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );
