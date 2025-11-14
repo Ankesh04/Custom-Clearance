@@ -201,3 +201,145 @@
 }
 
 .modal-footer small { color: #9ca3af; }
+/* Items Grid */
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.item-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.item-card h4 {
+  margin: 0 0 0.5rem;
+  color: #1f2937;
+}
+
+.hs-code {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+}
+
+.tax-breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.tax-breakdown span {
+  background: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+}
+
+.tax-breakdown strong {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.note {
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-style: italic;
+  margin: 0.5rem 0;
+}
+
+.docs-details {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.docs-details summary {
+  cursor: pointer;
+  font-weight: 500;
+  color: #2563eb;
+}
+
+.docs-details ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.docs-details li {
+  margin: 0.25rem 0;
+  color: #4b5563;
+}
+
+.coming-soon {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+}
+
+.coming-soon h3 {
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+/* Trade Lane Item with Remove */
+.trade-lane-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.trade-lane-item:hover {
+  border-color: #10b981;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+}
+
+.trade-lane-item.selected {
+  border-color: #10b981;
+  background: #f0fdf4;
+  font-weight: 500;
+}
+
+.lane-content {
+  flex: 1;
+}
+
+.lane-route {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.lane-category {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 0 0.5rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.remove-btn:hover {
+  opacity: 1;
+}
+
+.remove-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

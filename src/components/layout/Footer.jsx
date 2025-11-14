@@ -7,7 +7,7 @@ const Logo = () => (
     <div className="logo-icon-wrapper">
       <span className="logo-icon-text">C</span>
     </div>
-    <a className="logo-text" href="#heros">Custom Clearance</a>
+    <span className="logo-text">Custom Clearance</span>
   </div>
 );
 
@@ -16,6 +16,7 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="footer-container">
         <div className="footer-grid">
+
           {/* --- Logo & Tagline --- */}
           <div className="footer-column">
             <Link to="/" aria-label="Home">

@@ -93,7 +93,7 @@ const LoginSignupPage = () => {
   // Redirect logged-in users
   useEffect(() => {
     if (user) {
-      navigate("/dashboard");
+      navigate("/tradelane");
     }
   }, [user, navigate]);
 
@@ -144,7 +144,7 @@ const LoginSignupPage = () => {
       await user.getIdToken(true);
 
       setMessage("Logged in with Google!");
-      navigate("/dashboard");
+      navigate("/tradelane");
     } catch (error) {
       setMessage(`Google Login Failed: ${error.message}`);
     }

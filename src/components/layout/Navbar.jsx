@@ -65,7 +65,7 @@ export default function Navbar() {
             <a href="#how-it-works">How it Works</a>
             <a href="#reviews">Reviews</a>
             <a href="#countries">Countries</a>
-            <a href="dashboard">Dashboard</a>
+            <a href="tradelane">Dashboard</a>
           </nav>
 
           {!user ? (
@@ -126,7 +126,7 @@ export default function Navbar() {
           <a href="#countries" onClick={() => setMenuOpen(false)}>
             Countries
           </a>
-          <a href="dashboard" onClick={() => setMenuOpen(false)}>
+          <a href="/tradelane" onClick={() => setMenuOpen(false)}>
             Dashboard
           </a>
 

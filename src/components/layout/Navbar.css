@@ -36,7 +36,7 @@
 
 /* Logo */
 .logo{
-  margin: 30px;
+  margin: 18px;
 }
 .logo-link {
   flex-shrink: 0;
@@ -60,8 +60,8 @@
 }
 
 .logo-text {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.95rem;
+  font-weight: 1200;
   color: var(--blue);
 }
 .logo-link:hover .logo-icon-wrapper {
@@ -184,7 +184,7 @@
 .user-dropdown {
   position: absolute;
   top: 90px;
-  right: 250px;
+  right: 140px;
   width: 200px;
   background: white;
   border: 1px solid #d1d5db;
